@@ -8,7 +8,7 @@ redis
 redis-py-cluster
 redis-shard
 kazoo
-schedule
+celery[librabbitmq,redis,msgpack]
 msgpack-python
 thriftpy
 kafka-python
