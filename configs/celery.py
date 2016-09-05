@@ -13,6 +13,7 @@ CELERYD_LOG_FORMAT = '%(asctime)s %(levelname)-2s %(name)s.%(funcName)s:%(lineno
 CELERYD_TASK_LOG_FORMAT = '%(asctime)s %(levelname)-2s %(name)s.%(funcName)s:%(lineno)-5d %(message)s %(task_name)s(%(task_id)s) %(message)s'
 CELERY_ACKS_LATE = True
 CELERYD_PREFETCH_MULTIPLIER = 16
+CELERY_IGNORE_RESULT = True
 CELERY_TASK_RESULT_EXPIRES = 900
 CELERY_DISABLE_RATE_LIMITS = True
 
