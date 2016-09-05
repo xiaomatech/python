@@ -13,6 +13,21 @@ CELERYD_LOG_FORMAT = '%(asctime)s %(levelname)-2s %(name)s.%(funcName)s:%(lineno
 CELERYD_TASK_LOG_FORMAT = '%(asctime)s %(levelname)-2s %(name)s.%(funcName)s:%(lineno)-5d %(message)s %(task_name)s(%(task_id)s) %(message)s'
 CELERY_ACKS_LATE = True
 CELERYD_PREFETCH_MULTIPLIER = 16
-CELERY_ROUTES = {'syb_test_wrapper':{'queue':'syb_test'}}
 CELERY_TASK_RESULT_EXPIRES = 900
 CELERY_DISABLE_RATE_LIMITS = True
+
+#CELERY_DEFAULT_QUEUE = 'default'
+#CELERY_QUEUES = (
+#    Queue('default', Exchange('default'), routing_key='default'),
+#    Queue('feed_tasks', routing_key='feed.#'),
+#     'feeds.tasks.import_feed': {
+#          'queue': 'feed_tasks',
+#          'routing_key': 'feed.import',
+#      },
+#    Queue('image_tasks',   exchange=Exchange('mediatasks', type='direct'),
+#                           routing_key='image.compress'),
+#   
+#)
+#CELERY_DEFAULT_QUEUE = 'default'
+#CELERY_DEFAULT_EXCHANGE_TYPE = 'topic' #'direct'
+#CELERY_DEFAULT_ROUTING_KEY = 'default'
