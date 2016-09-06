@@ -11,16 +11,20 @@ def check_token(func):
     """check if the token is invalid
     """
     cache = {}
+
     def __wrapper__(**kwargs):
         """use cache token or create new"""
-        if not cache.get('token', '') or cache.get('expire', 0) + 7200 < time.time():
+        if not cache.get('token',
+                         '') or cache.get('expire', 0) + 7200 < time.time():
             resp = DingTalk.get_token(**kwargs)
             if resp['errcode'] != 0:
                 raise Exception('HttpError: %s', resp['errmsg'])
             cache['token'] = resp['token']
             cache['expire'] = time.time()
         return cache['token']
+
     return __wrapper__
+
 
 class DingTalk():
     def __init__(self, **kwargs):
@@ -45,11 +49,11 @@ class DingTalk():
         self.access_token = access_token
         return access_token
 
-    def post_images(self, source_img,file_type='image'):
+    def post_images(self, source_img, file_type='image'):
         if self.access_token is None:
             self.access_token = self.get_token()
         headers = {'content-type': 'application/json'}
-        post_url = 'https://oapi.dingtalk.com/media/upload?access_token=' + self.access_token + '&type=%s'%file_type
+        post_url = 'https://oapi.dingtalk.com/media/upload?access_token=' + self.access_token + '&type=%s' % file_type
         files = {'media': open(source_img, 'rb')}
         try:
             res = requests.post(post_url, files=files).json()

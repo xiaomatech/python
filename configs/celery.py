@@ -1,4 +1,4 @@
-from kombu import Exchange Queue
+from kombu import Exchange, Queue
 
 BROKER_URL = 'amqp://guest@localhost/'
 BROKER_POOL_LIMIT = 256
@@ -6,7 +6,7 @@ CELERY_RESULT_BACKEND = "redis://localhost/0"
 CELERY_REDIS_MAX_CONNECTIONS = 512
 CELERY_ACCEPT_CONTENT = ['pickle' 'json' 'msgpack']
 CELERY_TASK_SERIALIZER = "json"
-CELERY_RESULT_SERIALIZER="json"
+CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = 'Asia/Shanghai'
 CELERY_ENABLE_UTC = True
 CELERYD_LOG_FORMAT = '%(asctime)s %(levelname)-2s %(name)s.%(funcName)s:%(lineno)-5d %(message)s'

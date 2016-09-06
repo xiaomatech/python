@@ -17,8 +17,9 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 handler = logging.handlers.RotatingFileHandler(
     log_loader.get('log_file'), **log_common)
-handler.setFormatter(logging.Formatter(
-    '%(asctime)s %(levelname)-8s[%(filename)s:%(lineno)d(%(funcName)s)] %(message)s'))
+handler.setFormatter(
+    logging.Formatter(
+        '%(asctime)s %(levelname)-8s[%(filename)s:%(lineno)d(%(funcName)s)] %(message)s'))
 logger.addHandler(handler)
 
 
@@ -94,10 +95,11 @@ class Loader(object):
                 self.files[filename] = os.stat(filename).st_mtime
             filename = os.path.abspath(filename)
             name = filename.replace('.pyc', '').replace('.py', '')
-            if not os.path.exists(os.path.join(
-                    os.path.dirname(name),
-                    '__init__.py')) and not os.path.exists(os.path.join(
-                        os.path.dirname(name), '__init__.pyc')):
+            if not os.path.exists(
+                    os.path.join(os.path.dirname(
+                        name), '__init__.py')) and not os.path.exists(
+                            os.path.join(os.path.dirname(name),
+                                         '__init__.pyc')):
                 sys.path.insert(0, os.path.join(os.path.dirname(name)))
                 name = os.path.basename(name)
                 fn_, path, desc = imp.find_module(name,
@@ -219,16 +221,14 @@ class Loader(object):
                 module = self.load_file(file_path)
                 if module != None and module.__name__ in dir(module):
                     m = module.__name__
-                    if (isinstance(
-                            getattr(module, m), type) or
+                    if (isinstance(getattr(module, m), type) or
                             type(getattr(module, m)).__name__ == 'classobj'
                         ) and module != None and not m.startswith('_'):
                         self._register_instance(module, m, module_name)
                         continue
 
                 for m in dir(module):
-                    if (isinstance(
-                            getattr(module, m), type) or
+                    if (isinstance(getattr(module, m), type) or
                             type(getattr(module, m)).__name__ == 'classobj'
                         ) and module != None and not m.startswith('_'):
                         self._register_instance(module, m, module_name)
@@ -260,10 +260,10 @@ class Loader(object):
                                  str(_instance))
 
             except Exception as e:
-                self.logger.error(
-                    'create ' + module_name + ' of  ' + module_category_name +
-                    ' failed ,please check parameters, ' + str(e) +
-                    print_stack())
+                self.logger.error('create ' + module_name + ' of  ' +
+                                  module_category_name +
+                                  ' failed ,please check parameters, ' + str(
+                                      e) + print_stack())
 
             self.modules[module_category_name][module_name] = {
                 'aclass': getattr(module, module_name),

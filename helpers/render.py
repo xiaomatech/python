@@ -3,6 +3,7 @@
 from jinja2 import Environment, FileSystemLoader, Template
 env = Environment(loader=FileSystemLoader('views'))
 
+
 def render_template(tpl_name, *args, **kwagrs):
     """
     Render template helper function

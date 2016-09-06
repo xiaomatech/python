@@ -18,8 +18,8 @@ def get_cache_key(prefix, *args, **kwargs):
         return str(m2.hexdigest())
 
     parsed_args = ",".join(map(lambda x: str(x), args))
-    parsed_kwargs = ",".join(map(lambda x: '%s=%s' % (x, str(kwargs[x])),
-                                 kwargs))
+    parsed_kwargs = ",".join(
+        map(lambda x: '%s=%s' % (x, str(kwargs[x])), kwargs))
     parsed = filter(lambda x: x != '', [parsed_args, parsed_kwargs])
     key = prefix + ','.join(parsed)
     return prefix + '_' + md5(str(key))

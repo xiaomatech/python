@@ -9,9 +9,8 @@ class MultipartMiddleware(object):
         self.parser = cgi.FieldStorage
 
     def parse(self, stream, environ, keep_blank_values=1):
-        return self.parser(fp=stream,
-                           environ=environ,
-                           keep_blank_values=keep_blank_values)
+        return self.parser(
+            fp=stream, environ=environ, keep_blank_values=keep_blank_values)
 
     def process_request(self, req, resp, **kwargs):
 

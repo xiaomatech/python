@@ -31,14 +31,8 @@ ssh_config = {
 }
 
 jpush_config = {
-    'app_key' : '6be9204c30b9473e87bad4dc',
-    'master_secret' : '9349ad7c90292a603c512e92'
+    'app_key': '6be9204c30b9473e87bad4dc',
+    'master_secret': '9349ad7c90292a603c512e92'
 }
-qqpush_config = {
-    'accessId'  : '',
-    'secretKey' : ''
-}
-yunpain_config = {
-    'APIKEY':'xxxxxx',
-    'API_SECRET':'12345678'
-}
+qqpush_config = {'accessId': '', 'secretKey': ''}
+yunpain_config = {'APIKEY': 'xxxxxx', 'API_SECRET': '12345678'}

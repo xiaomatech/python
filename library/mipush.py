@@ -105,10 +105,8 @@ class MipushClient(object):
                              headers=headers,
                              timeout=timeout)
         elif method == 'post':
-            r = requests.post(url,
-                              params=fields,
-                              headers=headers,
-                              timeout=timeout)
+            r = requests.post(
+                url, params=fields, headers=headers, timeout=timeout)
         return r
 
     # ##### DevTools #####
@@ -429,5 +427,3 @@ if __name__ == '__main__':
     except MipushError as e:
         print 'error'
         print e.raw
-
-

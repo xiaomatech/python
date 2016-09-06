@@ -14,8 +14,9 @@ import multiprocessing
 import requests
 import hashlib
 
+
 def exec_cmd(cmd):
-    p = Popen(cmd,shell=True,stdout=PIPE,stderr=PIPE)
+    p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE)
     try:
         stdout, stderr = p.communicate()
     finally:
@@ -23,7 +24,8 @@ def exec_cmd(cmd):
         p.stdout.close()
         p.stderr.close()
     rc = p.returncode
-    return rc,stdout,stderr
+    return rc, stdout, stderr
+
 
 def ansible_run(**post_data):
     playbook = post_data.get('playbook')
@@ -31,9 +33,8 @@ def ansible_run(**post_data):
     hosts = post_data.get('hosts')
     if playbook is None or extra_vars is None or hosts is None:
         raise Exception('params missing')
-    thread_pool.apply_async(do_task,
-                            kwds=json.loads(post_data),
-                            callback=ansible_callback)
+    thread_pool.apply_async(
+        do_task, kwds=json.loads(post_data), callback=ansible_callback)
 
 
 def do_task(**post_data):
@@ -43,11 +44,12 @@ def do_task(**post_data):
     playbook = post_data.get('playbook')
     extra_vars = post_data.get('extra_vars')
     hosts = post_data.get('hosts')
-    p = Popen("/usr/bin/ansible-playbook -i %s  %s --extra-vars='%s' -s" %
-              (hosts, playbook, extra_vars),
-              shell=True,
-              stdout=PIPE,
-              stderr=PIPE)
+    p = Popen(
+        "/usr/bin/ansible-playbook -i %s  %s --extra-vars='%s' -s" %
+        (hosts, playbook, extra_vars),
+        shell=True,
+        stdout=PIPE,
+        stderr=PIPE)
     try:
         stdout, stderr = p.communicate()
     finally:
@@ -102,17 +104,19 @@ def ssh_remote_execute(host, cmd):
             if private_key_file is not None and private_key_file != '':
                 k = paramiko.RSAKey.from_private_key_file(
                     filename=ssh_config.get('private_key_file'))
-                client.connect(host,
-                               username=ssh_config.get('user'),
-                               port=ssh_config.get('port'),
-                               timeout=ssh_config.get('timeout'),
-                               pkey=k)
+                client.connect(
+                    host,
+                    username=ssh_config.get('user'),
+                    port=ssh_config.get('port'),
+                    timeout=ssh_config.get('timeout'),
+                    pkey=k)
             else:
-                client.connect(host,
-                               username=ssh_config.get('user'),
-                               password=ssh_config.get('password'),
-                               port=ssh_config.get('port'),
-                               timeout=ssh_config.get('timeout'))
+                client.connect(
+                    host,
+                    username=ssh_config.get('user'),
+                    password=ssh_config.get('password'),
+                    port=ssh_config.get('port'),
+                    timeout=ssh_config.get('timeout'))
             stdin, stdout, stderr = client.exec_command(cmd, timeout=300)
             result = stdout.readlines()
             log_debug(result)
@@ -162,9 +166,8 @@ def async_task(callback):
     def handle_func(func):
         @functools.wraps(func)
         def handle_args(*args, **kwargs):
-            async_pool = callback_pool.apply_async(func,
-                                                   kwds=kwargs,
-                                                   callback=callback)
+            async_pool = callback_pool.apply_async(
+                func, kwds=kwargs, callback=callback)
             async_pool.join()
 
         return handle_args
@@ -191,9 +194,8 @@ def async_process_task(callback):
     def handle_func(func):
         @functools.wraps(func)
         def handle_args(*args, **kwargs):
-            result = async_processe_pool.map_async(func=func,
-                                                   iterable=args,
-                                                   callback=callback)
+            result = async_processe_pool.map_async(
+                func=func, iterable=args, callback=callback)
             async_processe_pool.join()
             return result
 

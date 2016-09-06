@@ -12,14 +12,16 @@ if not os.path.isdir(log_dir):
 
 logger = logging.getLogger(__name__)
 handler = RotatingFileHandler(log_error_config.get('log_file'), **log_common)
-handler.setFormatter(logging.Formatter(
-    '%(asctime)s %(levelname)-8s[%(filename)s:%(lineno)d(%(funcName)s)] %(message)s'))
+handler.setFormatter(
+    logging.Formatter(
+        '%(asctime)s %(levelname)-8s[%(filename)s:%(lineno)d(%(funcName)s)] %(message)s'))
 logger.addHandler(handler)
 
 logger_debug = logging.getLogger(__name__ + '_debug')
 handler = RotatingFileHandler(log_debug_config.get('log_file'), **log_common)
-handler.setFormatter(logging.Formatter(
-    '%(asctime)s %(levelname)-8s[%(filename)s:%(lineno)d(%(funcName)s)] %(message)s'))
+handler.setFormatter(
+    logging.Formatter(
+        '%(asctime)s %(levelname)-8s[%(filename)s:%(lineno)d(%(funcName)s)] %(message)s'))
 logger_debug.addHandler(handler)
 
 
