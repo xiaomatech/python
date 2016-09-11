@@ -170,8 +170,9 @@ class QQClient():
         while True:
             time.sleep(1)
             t += int(time.clock() * 10000)
-            res = self._parse_arg(requests.post(url_check_QR_state.format(
-                timer=t)).text).decode('utf-8').strip()
+            res = self._parse_arg(
+                requests.post(url_check_QR_state.format(timer=t)).text).decode(
+                    'utf-8').strip()
             if prev != res[0]:
                 if res[0] == '65':
                     log.info(tag + 'QR code expired.')
@@ -222,8 +223,8 @@ class QQClient():
 
         # second step login
         post_login2['ptwebqq'] = self.ptwebqq
-        j2 = requests.post(url_login2,
-                           data={'r': json.dumps(post_login2)}).json()
+        j2 = requests.post(
+            url_login2, data={'r': json.dumps(post_login2)}).json()
 
         self.uin = j2['result']['uin']
         self.psessionid = j2['result']['psessionid']
@@ -294,33 +295,33 @@ class QQClient():
             url_poll2, data=d, headers=self.poll_headers).json()
 
     def get_user_friends(self):
-        self.friend_list.parse_friends(requests.get(
-            'http://s.web2.qq.com/api/get_user_friends2',
-            data={'r': json.dumps({
-                'hash': self.get_qq_hash(),
-                'vfwebqq': self.vfwebqq
-            })},
-            headers=self.default_headers).json())
+        self.friend_list.parse_friends(
+            requests.get('http://s.web2.qq.com/api/get_user_friends2',
+                         data={'r': json.dumps({
+                             'hash': self.get_qq_hash(),
+                             'vfwebqq': self.vfwebqq
+                         })},
+                         headers=self.default_headers).json())
         log.info('list' + 'Finished getting friend list.')
 
     def get_group_list(self):
-        self.friend_list.parse_groups(requests.get(
-            'http://s.web2.qq.com/api/get_group_name_list_mask2',
-            data={'r': json.dumps({
-                'hash': self.get_qq_hash(),
-                'vfwebqq': self.vfwebqq
-            })},
-            headers=self.default_headers).json())
+        self.friend_list.parse_groups(
+            requests.get('http://s.web2.qq.com/api/get_group_name_list_mask2',
+                         data={'r': json.dumps({
+                             'hash': self.get_qq_hash(),
+                             'vfwebqq': self.vfwebqq
+                         })},
+                         headers=self.default_headers).json())
         log.info('list' + 'Group list fetched.')
 
     def get_discus_list(self):
-        self.friend_list.parse_discus(requests.get(
-            'http://s.web2.qq.com/api/get_discus_list',
-            data={'clientid': 53999199,
-                  'psessionid': self.psessionid,
-                  'vfwebqq': self.vfwebqq,
-                  't': int(time.time())},
-            headers=self.default_headers).json())
+        self.friend_list.parse_discus(
+            requests.get('http://s.web2.qq.com/api/get_discus_list',
+                         data={'clientid': 53999199,
+                               'psessionid': self.psessionid,
+                               'vfwebqq': self.vfwebqq,
+                               't': int(time.time())},
+                         headers=self.default_headers).json())
         log.info('list' + 'Discus group list fetched.')
 
     def get_online_buddies(self):
@@ -329,19 +330,20 @@ class QQClient():
                           'vfwebqq={}&clientid={}&psessionid={}&t={}').format(
                               self.vfwebqq, 53999199, self.psessionid,
                               time.time())
-        self.friend_list.parse_online_buddies(requests.get(
-            url_get_online, headers=self.poll_headers).json())
+        self.friend_list.parse_online_buddies(
+            requests.get(url_get_online, headers=self.poll_headers).json())
         log.info('list' + 'Online buddies list fetched.')
 
     def get_recent_list(self):
-        self.friend_list.parse_recent(requests.post(
-            'http://d1.web2.qq.com/channel/get_recent_list2',
-            data={'r': json.dumps({
-                'vfwebqq': self.vfwebqq,
-                'clientid': 53999199,
-                'psessionid': self.psessionid
-            })},
-            headers=self.poll_headers).json())
+        self.friend_list.parse_recent(
+            requests.post(
+                'http://d1.web2.qq.com/channel/get_recent_list2',
+                data={'r': json.dumps({
+                    'vfwebqq': self.vfwebqq,
+                    'clientid': 53999199,
+                    'psessionid': self.psessionid
+                })},
+                headers=self.poll_headers).json())
         log.info('list' + 'Recent list fetched.')
 
     def get_self_info(self):
@@ -426,16 +428,17 @@ class QQClient():
                                "style": [0, 0, 0],
                                "color": color}]
         ])
-        requests.post('http://d1.web2.qq.com/channel/send_buddy_msg2',
-                      data={'r': json.dumps({
-                          'to': uin,
-                          'content': c,
-                          'face': self.friend_list.f[uin]['face'],
-                          'clientid': 53999199,
-                          'msg_id': self.msg_id,
-                          'psessionid': self.psessionid
-                      })},
-                      headers=self.poll_headers)
+        requests.post(
+            'http://d1.web2.qq.com/channel/send_buddy_msg2',
+            data={'r': json.dumps({
+                'to': uin,
+                'content': c,
+                'face': self.friend_list.f[uin]['face'],
+                'clientid': 53999199,
+                'msg_id': self.msg_id,
+                'psessionid': self.psessionid
+            })},
+            headers=self.poll_headers)
 
     def send_group_message(self,
                            gid,
@@ -450,16 +453,17 @@ class QQClient():
                                "style": [0, 0, 0],
                                "color": color}]
         ])
-        requests.post('http://d1.web2.qq.com/channel/send_qun_msg2',
-                      data={'r': json.dumps({
-                          'group_uin': gid,
-                          'content': c,
-                          'face': 0,  # TODO figure out what `face` is
-                          'clientid': 53999199,
-                          'msg_id': self.msg_id,
-                          'psessionid': self.psessionid
-                      })},
-                      headers=self.poll_headers)
+        requests.post(
+            'http://d1.web2.qq.com/channel/send_qun_msg2',
+            data={'r': json.dumps({
+                'group_uin': gid,
+                'content': c,
+                'face': 0,  # TODO figure out what `face` is
+                'clientid': 53999199,
+                'msg_id': self.msg_id,
+                'psessionid': self.psessionid
+            })},
+            headers=self.poll_headers)
 
     def get_real_uin(self, tuin):
         """Get user's real uin by tuin
