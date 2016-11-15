@@ -9,18 +9,16 @@ _unpack_V = lambda b: struct.unpack("<L", b)
 _unpack_N = lambda b: struct.unpack(">L", b)
 _unpack_C = lambda b: struct.unpack("B", b)
 
-file_path = '../vendors/17monipdb.dat'
-file_x_path = '../vendors/17monipdb.datx'
+datx_file = '../vendors/ip2location.datx'
+dat_file  = '../vendors/ip2location.dat'
 
 class IP:
     offset = 0
     index = 0
     binary = ""
 
-    def __init__(self,file=file_path):
-        self.load(file)
-
-    def load(self,file):
+    @staticmethod
+    def load(file):
         try:
             path = os.path.abspath(file)
             with open(path, "rb") as f:
@@ -34,6 +32,9 @@ class IP:
 
     @staticmethod
     def find(ip):
+        if IPX.index == 0:
+            IPX.load(dat_file)
+
         index = IP.index
         offset = IP.offset
         binary = IP.binary
@@ -67,11 +68,15 @@ class IPX:
     index = 0
     offset = 0
 
-    def __init__(self,file=file_x_path):
-        self.load(file)
+    ipx_keys = [
+        'country', 'province', 'city', 'district',
+        'isp', 'lat', 'lag',
+        'timezone_name', 'timezone',
+        'zip', 'phonecode', 'countrycode', 'region'
+    ]
 
-
-    def load(self,file):
+    @staticmethod
+    def load(file):
         try:
             path = os.path.abspath(file)
             with open(path, "rb") as f:
@@ -85,6 +90,9 @@ class IPX:
 
     @staticmethod
     def find(ip):
+        if IPX.index == 0:
+            IPX.load(datx_file)
+
         index = IPX.index
         offset = IPX.offset
         binary = IPX.binary
@@ -112,3 +120,18 @@ class IPX:
 
         res_offset = offset + index_offset - 262144
         return binary[res_offset:res_offset + index_length].decode('utf-8')
+
+    @staticmethod
+    def query(ip):
+        data = IPX.find(ip).split('\t')
+        if len(data) != 13:
+            return {}
+        parsed = {
+            k: data[i]
+            for i, k in enumerate(IPX.ipx_keys)
+            }
+        return parsed
+
+
+if __name__ == '__main__':
+    print IPX.query('14.29.68.186')
