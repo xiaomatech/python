@@ -23,7 +23,7 @@ class Timer(object):
 
     def __init__(self, client, metric, tags=None):
         """Initialize.
-        :param object client: An instance of `pyfalcon.client.Client`
+        :param object client: An instance of `Client`
         :param str metric: The name of metric
         :param int step: The cycle of report
         :param str tags: Tags
@@ -66,7 +66,7 @@ class Client(object):
     """HTTP client."""
 
     def __init__(self,
-                 host="localhost",
+                 host="127.0.0.1",
                  port=1988,
                  timeout=1,
                  step=60):
@@ -177,7 +177,7 @@ class Client(object):
         :param str metric: The name of metric
         :param int step: The cycle of report, default is 60s, optional
         :param dict tags: Tags, optional
-        :return: An instance of `pyfalcon.client.Timer`.
+        :return: An instance of `Timer`.
         """
         return Timer(self, metric, tags)
 
